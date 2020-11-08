@@ -1,9 +1,31 @@
-import router from "@/router/index";
+// import Vue from 'vue'
+import router from "@/router";
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store'
+function filterAsyncRouter(router){
+    router.filter((item) => {
 
-router.beforeEach(async () => {
+    })
+}
+
+// console.log(store.state.global.allParties)
+
+// router.addRoutes(store.state.global.allParties);
+
+router.beforeEach(async (to, from, next) => {
     Nprogress.start()
-    store.global.allParties
+    // console.log(store.state.global.allParties)
+    // if(window.sessionStorage.getItem('hasRouter')){
+    //     next()
+    // }else{
+    //     router.addRoutes(store.state.global.allParties);
+    //     window.sessionStorage.setItem('hasRouter',true);
+    //     next()
+    // }
+    next()
+});
+
+router.afterEach(() =>{
+    Nprogress.done()
 })

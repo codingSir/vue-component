@@ -27,6 +27,7 @@ function readComponent(){
 
 
 module.exports = {
+    lintOnSave:false,
     chainWebpack:  config => {
         config.plugin('define').tap(  function (argParams)  {
             console.log(argParams[0])

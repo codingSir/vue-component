@@ -1,84 +1,105 @@
 <template>
-  <el-container style="height: 500px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']">
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>导航一</template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="1-1">选项1</el-menu-item>
-            <el-menu-item index="1-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-submenu index="2">
-          <template slot="title"><i class="el-icon-menu"></i>导航二</template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="2-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-submenu index="3">
-          <template slot="title"><i class="el-icon-setting"></i>导航三</template>
-          <el-menu-item-group>
-            <template slot="title">分组一</template>
-            <el-menu-item index="3-1">选项1</el-menu-item>
-            <el-menu-item index="3-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="3-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="3-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="3-4-1">选项4-1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-      </el-menu>
-    </el-aside>
+      <el-container style="height: 100%">
+            <el-aside style="width:auto;">
+                  <el-menu class="el-menu-vertical-menu" :collapse="collapseMenu">
+                        <el-submenu index="1">
+                              <template slot="title">
+                                    <i class="el-icon-location"></i>
+                                    <span slot="title">组件和方案</span>
+                              </template>
+                              <el-menu-item-group>
+                                    <el-menu-item v-for="(item,index) in menuList" :key="index"  @click="routeGo(item)">
+                                          {{item.name}}
+                                    </el-menu-item>
+                              </el-menu-item-group>
+                        </el-submenu>
+                  </el-menu>
+            </el-aside>
 
-    <el-container>
-      <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <span>王小虎</span>
-      </el-header>
+            <el-container>
+                  <el-header
+                          style="box-shadow:0 2px 8px #f0f1f2;display: flex;align-items: center;justify-content: space-between">
+                        <i class="el-icon-s-fold" v-if="!collapseMenu" @click="handleCollapse"></i>
+                        <i class="el-icon-s-unfold" v-if="collapseMenu" @click="handleCollapse"></i>
+                        <span style="">@:961618709qq.com</span>
+                  </el-header>
 
-      <el-main>
-
-      </el-main>
-    </el-container>
-  </el-container>
+                  <el-main style="position:relative;display: flex;padding: 0px">
+                       <div style="flex:1"> <router-view ></router-view></div>
+                        <el-aside :width="isShrink? '250px': '0px'" style="box-shadow: rgb(240, 241, 242) 0px 2px 8px;transition: all .3s">
+                              <prop-config-panel v-show="isShrink"></prop-config-panel>
+                        </el-aside>
+                        <div
+                                :style="{right:isShrink ? '250px': 0} "
+                                class="shrink-arrow"
+                                @click="isShrink = !isShrink"
+                        >
+                              <i v-if="isShrink" class="el-icon-d-arrow-right"></i>
+                              <i v-if="!isShrink" class="el-icon-d-arrow-left"></i>
+                        </div>
+                  </el-main>
+            </el-container>
+      </el-container>
 </template>
 <script>
-export default {
-  name: "Base.layout",
-  data() {
-    return {}
-  },
-  methods: {}
-}
+    import {mapState} from 'vuex'
+    import propConfigPanel from './Prop.config.panel'
+
+    export default {
+        name: "Base.layout",
+        components: {
+            propConfigPanel
+        },
+        computed: {
+            ...mapState('global', {
+                collapseMenu: state => state.collapseMenu,
+                menuList: state => state.allParties,
+            })
+        },
+        data() {
+            return {
+                isShrink:true
+            }
+        },
+        methods: {
+            handleCollapse() {
+                this.$store.commit('global/COLLASPSEMENU', !this.collapseMenu)
+            },
+            routeGo(item){
+                this.$router.push(item.path)
+            }
+        }
+    }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+      .shrink-arrow {
+            position: absolute;
+            top: 50%;
+            right: 0px;
+            width: 20px;
+            height: 60px;
+            line-height: 60px;
+            background: #e4e7ed;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0px 2px 3px 0 rgba(188, 188, 188, 0.35);
+            transition: all .3s;
+            &:hover {
+                  background-color: #00b0ff;
+                  color: white;
+            }
+      }
+</style>
+<style>
+      .el-menu-vertical-menu {
+            height: 100%;
+      }
 
+      .el-menu-vertical-menu:not(.el-menu--collapse) {
+            width: 200px;
+      }
 </style>

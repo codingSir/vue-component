@@ -9,12 +9,17 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "css-loader": "^5.0.1",
     "element-ui": "^2.14.0",
     "lodash": "^4.17.20",
+    "node-sass": "^5.0.0",
     "nprogress": "^0.2.0",
+    "postcss-loader": "^4.0.4",
     "resize-detector": "^0.2.2",
+    "sass-loader": "^10.0.5",
     "uuid": "^8.3.1",
     "vue": "^2.6.11",
+    "vue-ls": "^3.2.1",
     "vue-router": "^3.4.8",
     "vuex": "^3.5.1"
   },
