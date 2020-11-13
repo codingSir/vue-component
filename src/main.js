@@ -5,8 +5,8 @@ import store from '@/store'
 import router from '@/router'
 import element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
-
 import ls from 'vue-ls'
+
 const options = {
     namespace: 'vuejs__', // key键前缀
     name: 'ls', // 命名Vue变量.[ls]或this.[$ls],

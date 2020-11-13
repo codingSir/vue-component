@@ -8,7 +8,7 @@
                                     <span slot="title">组件和方案</span>
                               </template>
                               <el-menu-item-group>
-                                    <el-menu-item v-for="(item,index) in menuList" :key="index"  @click="routeGo(item)">
+                                    <el-menu-item v-for="(item,index) in menuList" :key="index" :index="item.path"  @click="routeGo(item)">
                                           {{item.name}}
                                     </el-menu-item>
                               </el-menu-item-group>
@@ -25,7 +25,9 @@
                   </el-header>
 
                   <el-main style="position:relative;display: flex;padding: 0px">
-                       <div style="flex:1"> <router-view ></router-view></div>
+                       <panel-view style="flex:1">
+                         <router-view ></router-view>
+                       </panel-view>
                         <el-aside :width="isShrink? '250px': '0px'" style="box-shadow: rgb(240, 241, 242) 0px 2px 8px;transition: all .3s">
                               <prop-config-panel v-show="isShrink"></prop-config-panel>
                         </el-aside>
@@ -44,11 +46,13 @@
 <script>
     import {mapState} from 'vuex'
     import propConfigPanel from './Prop.config.panel'
+    import panelView from './Panel.view'
 
     export default {
         name: "Base.layout",
         components: {
-            propConfigPanel
+            propConfigPanel,
+            panelView
         },
         computed: {
             ...mapState('global', {

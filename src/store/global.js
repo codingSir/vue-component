@@ -1,4 +1,6 @@
+import Vue from 'vue'
 import * as types from './mutations.type'
+import getCompTemplate from "@/utils/getTemplate";
 import router from '../router'
 import { constantRouterMaps } from '../router/router.config'
 /* eslint-disable */
@@ -9,7 +11,8 @@ export default {
         partiesStore:[],
         collapseMenu:false,
         baseExtraNode:[],
-        comId:''
+        comId: window.sessionStorage.getItem('comId') || '',
+        currentComp:''
     },
     mutations: {
         [types.COLLASPSEMENU](state, value){
@@ -22,8 +25,8 @@ export default {
             router.addRoutes(constantRouterMaps);
         },
         [types.SET_PARTIES_STORE_ITEM](state, value){
-
-             state.partiesStore.push(value)
+              let party = state.partiesStore.find(item => item.id === value.id)
+              !party && state.partiesStore.push(value)
         },
         [types.SET_PARTIES_STORE](state, {id, party}){
 
@@ -37,7 +40,11 @@ export default {
             state.partiesStore = [...partiesStore]
         },
         [types.SET_COM_ID](state,value){
+            window.sessionStorage.setItem('comId',value)
             state.comId = value
+        },
+        [types.SET_CURRENT_COM](state,value){
+            state.currentComp = value
         }
     },
     actions: {

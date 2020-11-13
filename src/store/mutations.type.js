@@ -11,3 +11,6 @@ export const SET_PARTIES_STORE_ITEM = 'SET_PARTIES_STORE_ITEM';
 
 //当前组件id
 export const SET_COM_ID = 'SET_COM_ID';
+
+//当前组件
+export const SET_CURRENT_COM = 'SET_CURRENT_COM'

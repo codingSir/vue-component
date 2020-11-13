@@ -1,39 +1,41 @@
-import { mapState } from 'vuex'
+import {mapState} from "vuex";
+
 export default {
-    ...mapState('global',{
-        partiesStore: state => state.partiesStore
-    }),
+    computed:{
+        ...mapState('global',{
+            partiesStore: state => state.partiesStore
+        }),
+    },
     watch:{
         partiesStore:{
-            handler(newId, oldId){
+            handler(newStore){
                 this.getProps()
-            }
+            },
+            immediate:true
         }
     },
     data(){
         return {
-            comProps:{
-                maxLines:2
-            }
+            comProps:{}
         }
     },
     created(){
-        console.log(this.partiesStore)
         this.setComId()
     },
     methods:{
         setComId(){
-            this.$store.commit('global/SET_COM_ID',this.comId)
+            this.$store.commit('global/SET_COM_ID',this.comId);
+            let comp = _.find(this.partiesStore,item => item.id === this.comId);
+            this.$store.commit('global/SET_CURRENT_COM', comp)
         },
         getProps(){
-            console.log(this.partiesStore)
-            if(!this.partiesStore) return ;
+            if(!this.partiesStore || !this.comId) return ;
             let party = this.partiesStore.find(item => item.id === this.comId);
 
             _.map(party.config,item => {
-                 this.comProps = {
-                     [item.prop]: item.value
-                 }
+                 this.comProps =_.assign({},this.comProps,{
+                     [item.props]: item.value
+                 })
             })
             console.log(this.comProps)
         }
