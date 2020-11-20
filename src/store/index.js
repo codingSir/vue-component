@@ -8,6 +8,14 @@ Vue.use(vuex);
 const store = new vuex.Store({
   modules:{
       global
+  },
+  state:{
+     progress:''
+  },
+  mutations:{
+    ['uploadProgressMutations'](state,value){
+      state.progress = value
+    }
   }
 })
 

@@ -21,7 +21,20 @@
                           style="box-shadow:0 2px 8px #f0f1f2;display: flex;align-items: center;justify-content: space-between">
                         <i class="el-icon-s-fold" v-if="!collapseMenu" @click="handleCollapse"></i>
                         <i class="el-icon-s-unfold" v-if="collapseMenu" @click="handleCollapse"></i>
-                        <span style="">@:961618709qq.com</span>
+                        <div style="display: flex">
+                          <el-upload
+                              class="upload-demo"
+                              ref="upload"
+                              :action="url"
+                              :show-file-list="false"
+                              :http-request="upload"
+                              :before-upload="beforeUpload"
+                              :auto-upload="true">
+                            <el-link slot="trigger" size="small" type="primary" plain>选取组件</el-link>
+                          </el-upload>
+                           <el-link type="primary" size="small" style="padding: 2px 0 0 0;margin-left: 30px">部署项目</el-link>
+                          <span style="padding-left: 30px"> @:<a href="https://mail.qq.com/">961618709qq.com</a></span>
+                        </div>
                   </el-header>
 
                   <el-main style="position:relative;display: flex;padding: 0px">
@@ -62,7 +75,9 @@
         },
         data() {
             return {
-                isShrink:true
+                url:API.upload,
+                isShrink:true,
+                files:''
             }
         },
         methods: {
@@ -71,6 +86,19 @@
             },
             routeGo(item){
                 this.$router.push(item.path)
+            },
+            beforeUpload(file){
+              console.log(file)
+              const isJPG = file.type === 'zip';
+              this.files = file
+              console.log(isJPG)
+            },
+            upload(){
+              let formData = new FormData()
+              formData.append('file',this.files)
+              this.$uploadFile(API.upload,formData,{'Content-Type': 'multipart/form-data'}).then((res)=>{
+                console.log(res)
+              })
             }
         }
     }
